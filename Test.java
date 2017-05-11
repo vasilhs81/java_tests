@@ -1,18 +1,3 @@
-/*
- * Copyright 2017 WSO2.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.wso2.charon.samples;
 
 import java.io.File;
@@ -21,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -39,9 +25,9 @@ public class Test {
             sorted().
             forEach(System.out::println);
 
-        IntStream.range(0, mylist.size()).forEach(idx -> {
-            myMap.put(mylist.get(idx), idx);
-        });
+        IntStream.range(0, mylist.size()).forEach(idx ->
+            myMap.put(mylist.get(idx), idx)
+        );
         myMap.forEach((k, v) -> System.out.format("This is key: '%s' with value: %d\n", k, v));
         //mylist.stream().forEach(item->{
         //  myMap.put(item, item.)
@@ -89,7 +75,7 @@ public class Test {
     }
 
     public static void main(String[] args) {
-        //test_streams();
+        test_streams();
 
         test_passing_code("peaaaarrrrcorr", Test::startsWithSomething);
         test_passing_code("peaaaarrrrcorrgb", (String s) -> s.endsWith("gab"));
@@ -132,6 +118,10 @@ public class Test {
         createMap(Arrays.asList("aaa","bbb","asdasdfasd"),
             (String s)->s.length()+ ":" + s
             ).forEach((a,k)-> System.out.format("key: %s, value: %s\n",a,k));
+
+
+        collectTest();
+        //////////////////End of Main
         
     }
     
@@ -169,8 +159,36 @@ public class Test {
         list.stream().forEach(item->result.put(item,f.apply(item)));
         return result;
     }
-    
-    
+
+
+    public  static void collectTest(){
+
+        List<String> aa = Arrays.asList("a","b","d","c","d","asdfsa");
+        System.out.println(
+        aa.stream().map(String::toLowerCase).collect(Collectors.joining())); //collects just reduces the list by operation
+
+
+        System.out.println(
+        aa.stream().filter(d->d.length()==1).distinct().limit(4).count());
+
+        aa.stream().filter(d->d.length()==1).distinct().limit(4).forEach(System.out::println);
+
+
+        List<String> bb = aa.stream().filter(d->d.length()==1).distinct().limit(4).skip(2).collect(Collectors.toList());
+
+        forEach(bb, s -> System.out.print(s));
+
+        List<Integer> listOfIntegers = aa.stream().filter(d->d.length()==1).distinct().limit(4).skip(2).map(String::length)
+                .collect(Collectors.toList());
+
+        forEach(listOfIntegers, s -> System.out.print(s));
+
+
+    }
+
+
+
+    //Using flatMap
     
     
     
