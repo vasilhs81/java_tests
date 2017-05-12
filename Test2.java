@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.function.DoubleFunction;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 /**
@@ -46,6 +47,21 @@ public class Test2 {
         System.out.println(sum3);
 
     }
+    public static void testReduceParallel(){
+        long starttime = System.nanoTime();
+        long result = Stream.iterate(1L, i->i+10).limit(1000000).parallel().reduce(1L,Long::sum);
+        long time = System.nanoTime()-starttime;
+
+        System.out.println("Parallel Time: " + time +" Result: " + result );
+    }
+
+    public static void testReduceSequntial(){
+        long starttime = System.nanoTime();
+        long result = Stream.iterate(1L, i->i+10).limit(1000000).reduce(1L,Long::sum);
+        long time = System.nanoTime()-starttime;
+
+        System.out.println("Sequential Time: " + time +" Result: " + result );
+    }
 
     public static void testPattern(){
         Pattern patt = Pattern.compile(",");
@@ -79,6 +95,8 @@ public class Test2 {
         testJoining();
         System.out.println(integrate(f->f+5,1,3));
         System.out.println(integrate(f->Math.cos(f),0,2*3.14));
+        testReduceSequntial();
+        testReduceParallel();
 
     }
 
