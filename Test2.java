@@ -1,5 +1,7 @@
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.DoubleFunction;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -33,6 +35,15 @@ public class Test2 {
         max = list.stream().reduce(0.0, Math::max);
         min = list.stream().mapToDouble(Number::doubleValue).min().getAsDouble();
         System.out.println("max:"+max+ "min="+min);
+        double sum = list.stream().reduce(0D,(a, b) -> a + b);
+        System.out.println("sum=" + sum);
+        System.out.println("sum=" + list.stream().reduce(0D, Double::sum));
+
+
+        Optional<Double> sum2 = Stream.of(1.2,3.45).reduce((a, b) -> a + b);
+        Optional<Double> sum3 = Stream.of(1.2,3.45).limit(0).reduce((a, b) -> a + b);
+        System.out.println(sum2);
+        System.out.println(sum3);
 
     }
 
@@ -55,12 +66,19 @@ public class Test2 {
     }
 
 
+    public static double integrate (DoubleFunction<Double> f , double a, double b){
+        return (f.apply(a)+f.apply(b))*(b-a)/2.0;
+    }
+
+
     public static void main(String [] args){
 
         testIterate();
         testPattern();
         testReduce();
         testJoining();
+        System.out.println(integrate(f->f+5,1,3));
+        System.out.println(integrate(f->Math.cos(f),0,2*3.14));
 
     }
 
