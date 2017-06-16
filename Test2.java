@@ -24,9 +24,6 @@ public class Test2 {
         List<String> list = Arrays.asList("a","b","c");
         System.out.println(
         list.parallelStream().collect(Collectors.joining(":")));
-
-
-
     }
 
     public static void testReduce(){
@@ -50,6 +47,20 @@ public class Test2 {
     public static void testReduceParallel(){
         long starttime = System.nanoTime();
         long result = Stream.iterate(1L, i->i+10).limit(1000000).parallel().reduce(1L,Long::sum);
+        long time = System.nanoTime()-starttime;
+
+        System.out.println("Parallel Time: " + time +" Result: " + result );
+    }
+public static void testReduceParallelClosed(){
+        long starttime = System.nanoTime();
+        long result = LongStream.rangeClosed(1L,1000000).parallel().reduce(1L,Long::sum);
+        long time = System.nanoTime()-starttime;
+
+        System.out.println("Parallel Time: " + time +" Result: " + result );
+    }
+public static void testReduceSeqClosed(){
+        long starttime = System.nanoTime();
+        long result = LongStream.rangeClosed(1L,1000000).reduce(1L,Long::sum);
         long time = System.nanoTime()-starttime;
 
         System.out.println("Parallel Time: " + time +" Result: " + result );
@@ -97,6 +108,11 @@ public class Test2 {
         System.out.println(integrate(f->Math.cos(f),0,2*3.14));
         testReduceSequntial();
         testReduceParallel();
+
+        System.out.println("Second try");
+        testReduceParallelClosed();
+        testReduceSeqClosed();
+
 
     }
 
