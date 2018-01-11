@@ -1,4 +1,4 @@
-package org.wso2.charon.samples;
+//package org.wso2.charon.samples;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -121,6 +121,8 @@ public class Test {
 
 
         collectTest();
+
+        testMap();
         //////////////////End of Main
         
     }
@@ -186,6 +188,41 @@ public class Test {
 
     }
 
+
+    public static void testMap(){
+        List<String> aa = Arrays.asList("a","b","d","a","c","d","wwww");
+
+        //1. filter out duplicate list entries, with distinct.
+        //2. The unique now elements are being converted into a map, using collect() and Collectors.toMap
+        Map<String, String> map = aa.stream().distinct().collect(Collectors.toMap(v->String.valueOf(v.charAt(0)),item->item.toUpperCase()));
+
+        System.out.println();
+        map.forEach((s,v)->{
+            System.out.println("Key: " + s + " value: " + v);
+        });
+
+        // the same as above, but avoid distinct() method, using 3rd argument in collect()
+        map = aa.stream().collect(Collectors.toMap(v->String.valueOf(v.charAt(0)),item->item.toUpperCase(),(oldV, newV)->(newV)));
+        map.forEach((s,v)->{
+            System.out.println("Key: " + s + " value: " + v);
+        });
+
+
+        // check if any value of string has length>1
+        System.out.println(
+            aa.stream().anyMatch(t->t.length()>1)
+        );
+
+        //1. filter out every element with length >1
+        //2. convert the resulting stream of strings into a stream of Int - length (using mapToInt)
+        //3. Sum all integers lengths into one integer value, using reduce()
+        System.out.println(
+            aa.stream().filter(t->t.length()==1).mapToInt(a->a.length()).reduce(0,(a,b)-> a + b)
+        );
+
+
+        //reduce voleuei na a8roizei integers..
+    }
 
 
     //Using flatMap
